@@ -1,11 +1,16 @@
-import './App.css';
-import SignupFrom from './components/signupForm'
+import "./App.css";
+import { BrowserRouter } from "react-router-dom";
+import Routes from './routes'
+import Navbar from "./components/navbar";
 
 function App() {
   return (
-    <div className="App">
-     <SignupFrom />
-    </div>
+    <BrowserRouter>
+    <Navbar />
+      <div className="App">
+        <Routes />
+      </div>
+    </BrowserRouter>
   );
 }
 
