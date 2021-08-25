@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { validate } from "./helpers";
+import axios from 'axios'
 
 const SignupForm = () => {
   const [state, setState] = useState({
-    firstName: "",
-    lastName: "",
+    name: "",
     email: "",
     password: "",
     confirmPassword: "",
-    contact: "",
+    handle: "",
   });
 
   const [errors, setErrors] = useState({});
@@ -33,26 +33,28 @@ const SignupForm = () => {
 
 
     console.log(state);
+
+    axios.post("https://asia-east2-tweeter-d4a6d.cloudfunctions.net/api/signup", state)
+    .then(response => {
+      console.log(response)
+    })
+    .catch(error => {
+      console.error(error.response)
+      setErrors(error.response.data)
+    })
+
   };
 
   return (
     <form className="signup-form" onSubmit={handleSubmit}>
       <input
-        name="firstName"
-        value={state.firstName}
+        name="name"
+        value={state.name}
         type="text"
         placeholder="First Name"
         onChange={handleChange}
       />
-      <span>{errors.firstName}</span>
-      <input
-        name="lastName"
-        value={state.lastName}
-        type="text"
-        placeholder="Last Name"
-        onChange={handleChange}
-      />
-      <span>{errors.lastName}</span>
+      <span>{errors.name}</span>
       <input
         name="email"
         value={state.email}
@@ -78,13 +80,13 @@ const SignupForm = () => {
       />
       <span>{errors.confirmPassword}</span>
       <input
-        name="contact"
-        value={state.contact}
-        type="number"
-        placeholder="Contact No"
+        name="handle"
+        value={state.handle}
+        type="text"
+        placeholder="Username"
         onChange={handleChange}
       />
-      <span>{errors.contact}</span>
+      <span>{errors.handle}</span>
 
       <input type="Submit" value="Submit" readOnly />
     </form>

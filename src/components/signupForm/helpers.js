@@ -8,16 +8,10 @@ export function validate(state) {
   const regEx = /^[a-z][a-z\s]*$/;
   let errors = {};
 
-    if (state.firstName.trim() === "") {
-      errors.firstName = "First name can't be empty";
-    } else if (!state.firstName.match(regEx)) {
-      errors.firstName = "Name can only contain alphabets";
-    }
-
-    if (state.lastName.trim() === "") {
-      errors.lastName = "Last name can't be empty";
-    } else if (!state.lastName.match(regEx)) {
-      errors.lastName = "Name can only contain alphabets";
+    if (state.name.trim() === "") {
+      errors.name = "First name can't be empty";
+    } else if (!state.name.match(regEx)) {
+      errors.name = "Name can only contain alphabets";
     }
     if (state.email.trim() === "") {
       errors.email = "Email can't be empty";
@@ -35,8 +29,8 @@ export function validate(state) {
     } else if (state.confirmPassword !== state.password) {
       errors.confirmPassword = "Passwords do not match";
     }
-    if (state.contact.trim() === "") {
-      errors.contact = "Contact can't be empty";
+    if (state.handle.trim() === "") {
+      errors.handle = "Username can't be empty";
     }
 
 
