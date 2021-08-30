@@ -26,7 +26,7 @@ function Profile() {
       <h1>Profile</h1>
       {error && <h3>Something went wrong!</h3>}
       <h3>Name: {userData.name}</h3>
-      <img src={userData.imageUrl} width="100px" height="100px" alt="Profile Image" />
+      <img src={userData.imageUrl} width="100px" height="100px" alt="Profile" />
     </div>
   );
 }

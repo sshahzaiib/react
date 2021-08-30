@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
+import { AuthContext } from "../../App";
 
 const validationSchema = Yup.object({
   email: Yup.string().required("Required").email("Invalid Email"),
@@ -10,43 +11,47 @@ const validationSchema = Yup.object({
 });
 
 const LoginForm = () => {
-  const history = useHistory()
+  const history = useHistory();
+  const authContext = useContext(AuthContext)
 
-  return <Formik
-  initialValues={{ email: "", password: "" }}
-  validationSchema={validationSchema}
-  validateOnBlur={false}
-  validateOnChange={false}
-  onSubmit={(values, { setSubmitting }) => {
-    axios
-      .post(
-        "https://asia-east2-tweeter-d4a6d.cloudfunctions.net/api/login",
-        values
-      )
-      .then((response) => {
-        console.log(response);
-        localStorage.setItem("isLoggedIn", "true")
-        localStorage.setItem("token", response.data.token);
-        history.push("/profile")
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-    setSubmitting(false);
-  }}>
-  {({ isSubmitting }) => (
-    <Form>
-      <Field type="email" name="email" />
-      <ErrorMessage name="email" component="div" />
-      <Field type="password" name="password" />
-      <ErrorMessage name="password" component="div" />
-      <button type="submit" disabled={isSubmitting}>
-        Submit
-      </button>
-    </Form>
-  )}
-</Formik>
-
-}
+  return (
+    <Formik
+      initialValues={{ email: "", password: "" }}
+      validationSchema={validationSchema}
+      validateOnBlur={false}
+      validateOnChange={false}
+      onSubmit={(values, { setSubmitting }) => {
+        axios
+          .post(
+            "https://asia-east2-tweeter-d4a6d.cloudfunctions.net/api/login",
+            values
+          )
+          .then((response) => {
+            console.log(response);
+            localStorage.setItem("isLoggedIn", "true");
+            localStorage.setItem("token", response.data.token);
+            authContext.setIsLoggedIn(true)
+            authContext.setToken(response.data.token)
+            history.push("/profile");
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+        setSubmitting(false);
+      }}>
+      {({ isSubmitting }) => (
+        <Form>
+          <Field type="email" name="email" />
+          <ErrorMessage name="email" component="div" />
+          <Field type="password" name="password" />
+          <ErrorMessage name="password" component="div" />
+          <button type="submit" disabled={isSubmitting}>
+            Submit
+          </button>
+        </Form>
+      )}
+    </Formik>
+  );
+};
 
 export default LoginForm;
